@@ -11,4 +11,6 @@ RUN apt-get update && apt-get install --yes --no-install-recommends \
   && apt-get install --yes gcsfuse \
   && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+RUN mkdir -p /gcsfuse/gep-default-store
+
 CMD ["sleep","infinity"]

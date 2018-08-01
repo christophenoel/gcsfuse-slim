@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: gcsfuse-slim
+  labels:
+    app: gcsfuse-daemonset
+spec:
+  selector:
+    matchLabels:
+      name: gcsfuse-slim
+  template:
+    metadata:
+      labels:
+        name: gcsfuse-slim
+    spec:
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+      containers:
+      - name: gcsfuse
+        image: eu.gcr.io/spb-gep-dev/gcsfuse-slim:latest
+        resources:
+          requests:
+            cpu: 200m
+            memory: 200Mi
+        securityContext:
+          privileged: true
+          capabilities:
+            add:
+              - SYS_ADMIN
+        lifecycle:
+          postStart:
+            exec:
+              command: ["gcsfuse", "-o", "nonempty", "--debug_fuse","gep-default-store", "/gcsfuse/gep-default-store"]
+          preStop:
+             exec:
+               command: ["fusermount", "-u", "/gcsfuse/gep-default-store"]
+        volumeMounts:
+        - name: default-store-volume
+          mountPath: /gcsfuse/gep-default-store
+        - name: varlibdockercontainers
+          mountPath: /var/lib/docker/containers
+          readOnly: true
+      terminationGracePeriodSeconds: 10
+      volumes:
+      - name: default-store-volume
+        hostPath:
+          path: /gcsfuse/gep-default-store
