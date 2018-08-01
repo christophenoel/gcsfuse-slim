@@ -37,12 +37,10 @@ spec:
                command: ["fusermount", "-u", "/gcsfuse/gep-default-store"]
         volumeMounts:
         - name: default-store-volume
+          mountPropagation: Bidirectional
           mountPath: /gcsfuse/gep-default-store
-        - name: varlibdockercontainers
-          mountPath: /var/lib/docker/containers
-          readOnly: true
       terminationGracePeriodSeconds: 10
       volumes:
       - name: default-store-volume
         hostPath:
-          path: /gcsfuse/gep-default-store
+          path: /mnt/disks/gep-default-store
