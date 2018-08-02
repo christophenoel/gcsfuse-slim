@@ -19,7 +19,7 @@ spec:
         effect: NoSchedule
       containers:
       - name: gcsfuse
-        image: eu.gcr.io/spb-gep-dev/gcsfuse-slim:latest
+        image: spacebel/gcsfuse-slim
         resources:
           requests:
             cpu: 200m
