@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-# Take care: it requires Kubernetes 1.10 and feature is only in Beta 
+# Take care: it requires Kubernetes 1.10 and feature is only in Beta
 kind: DaemonSet
 metadata:
   name: gcsfuse-slim
