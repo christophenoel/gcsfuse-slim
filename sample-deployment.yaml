@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-deployment
+  labels:
+    app: sample
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: sample
+      labels:
+        app: sample
+    spec:
+      containers:
+      - name: sample
+        image: dockersaturn/certbot-sleeping
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: default-store-volume
+          mountPath: /data-store
+        ports:
+        - containerPort: 80
+      restartPolicy: Always
+      volumes:
+      - name: default-store-volume
+        hostPath:
+          path: /mnt/disks/gep-default-store
+  selector:
+    matchLabels:
+      app: sample
